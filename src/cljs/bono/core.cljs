@@ -1,9 +1,11 @@
 (ns bono.core
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [clojure.browser.repl :as repl]))
+  ))
 
 (enable-console-print!)
+
+(print "Jepa!")
 
 (def app-state
   (atom
@@ -31,7 +33,8 @@
         (apply dom/ul nil
           (om/build-all item-view (:items app)))))))
 
+
 (om/root
- item-list
- app-state
- {:target (. js/document (getElementById "app"))})
+  item-list
+  app-state
+  {:target (. js/document (getElementById "app"))})
