@@ -2,7 +2,7 @@
   (:require [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [ring.util.response :refer [resource-response response]]
+            [ring.util.response :refer [file-response resource-response response]]
             [ring.middleware.json :as json]
             [bono.db :as db]
             ))
@@ -11,7 +11,7 @@
   )
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/" [] (file-response "resources/public/index.html"))
   (GET "/items" [] (db/find-items []))
   (POST "/items" {params :params} (db/insert-item params) )
   (route/resources "/")
