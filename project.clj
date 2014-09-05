@@ -22,7 +22,7 @@
     :builds [{:id "bono"
               :source-paths ["src/cljs"]
               :compiler {
-                :output-to "resources/public/js/bono.js"
+                :output-to "resources/public/js/out/bono.js"
                 :output-dir "resources/public/js/out"
                 :optimizations :none
                 :source-map true}}]}
