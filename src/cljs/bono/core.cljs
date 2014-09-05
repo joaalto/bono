@@ -5,8 +5,6 @@
 
 (enable-console-print!)
 
-(print "Jepa!")
-
 (def app-state
   (atom
    {:items
@@ -24,6 +22,17 @@
     (render [this]
       (dom/li nil (display-item item)))))
 
+(defn add-item [app owner]
+  (let [item-name (->
+        (. js/document (getElementById "item-name"))
+                   .-value)
+        item-price (->
+        (. js/document (getElementById "item-price"))
+                   .-value)
+       ]
+  (print "Add item!" item-name item-price))
+        )
+
 (defn item-list [app owner]
   (reify
     om/IRender
@@ -31,8 +40,14 @@
       (dom/div nil
         (dom/h2 nil "Items")
         (apply dom/ul nil
-          (om/build-all item-view (:items app)))))))
-
+          (om/build-all item-view (:items app)))
+        (dom/button
+          #js {:onClick #(add-item app owner)} "Add item")
+        (dom/label nil "Item")
+        (dom/input #js {:id "item-name"})
+        (dom/label nil "Price")
+        (dom/input #js {:id "item-price"})
+       ))))
 
 (om/root
   item-list
