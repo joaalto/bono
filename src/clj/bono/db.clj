@@ -11,6 +11,7 @@
 (mg/connect)
 
 (defn insert-item [item]
+  (println (str item))
   mc/insert "bono" item)
 
 (defn find-items []

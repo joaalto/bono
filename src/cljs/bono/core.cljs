@@ -1,7 +1,11 @@
 (ns bono.core
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-  ))
+  )
+  (:import [goog.net XhrIo]
+           goog.net.EventType
+           [goog.events EventType])
+)
 
 (enable-console-print!)
 
@@ -29,9 +33,19 @@
         item-price (->
         (. js/document (getElementById "item-price"))
                    .-value)
+        item {:name item-name :price item-price}
+
+        xhr (XhrIo.)
        ]
-  (print "Add item!" item-name item-price))
-        )
+
+    (print "Add item!" item-name item-price)
+    (print item)
+
+    (. xhr
+       send "/items" "POST" item
+       #js {"Content-Type" "application/json"}) ; {:name item-name :price item-price})
+
+   ))
 
 (defn item-list [app owner]
   (reify
