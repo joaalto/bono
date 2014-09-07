@@ -4,6 +4,7 @@
             [compojure.route :as route]
             [ring.util.response :refer [file-response resource-response response]]
             [ring.middleware.json :as json]
+            [ring.middleware.edn :refer [wrap-edn-params]]
             [bono.db :as db]
             ))
 
@@ -18,4 +19,5 @@
   (route/not-found "Not Found"))
 
 (def app
-  (handler/site app-routes))
+  (-> app-routes
+      wrap-edn-params))

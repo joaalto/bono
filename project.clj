@@ -10,6 +10,7 @@
                  [compojure "1.1.8"]
                  [ring/ring-core "1.3.1"]
                  [ring/ring-json "0.3.1"]
+                 [fogus/ring-edn "0.2.0"]
                 ]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]
