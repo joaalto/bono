@@ -18,6 +18,19 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
+(defn new-item [item]
+  (db/insert-item item)
+)
+
+;(comment
+  (def app
+    (-> app-routes
+        wrap-edn-params))
+;)
+
+(comment
 (def app
-  (-> app-routes
-      wrap-edn-params))
+  (-> (handler/api app-routes)
+      (json/wrap-json-body)
+      (json/wrap-json-response)))
+)
