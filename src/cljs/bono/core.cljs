@@ -55,12 +55,12 @@
         (dom/h2 nil "Items")
         (apply dom/ul nil
           (om/build-all item-view (:items app)))
-        (dom/button
-          #js {:onClick #(add-item app owner)} "Add item")
         (dom/label nil "Item")
         (dom/input #js {:id "item-name"})
         (dom/label nil "Price")
         (dom/input #js {:id "item-price"})
+        (dom/button
+          #js {:onClick #(add-item app owner)} "Add item")
        ))))
 
 (om/root
