@@ -7,12 +7,15 @@
            [org.bson.types.ObjectId]))
 
 ;; Connect to localhost, default port
-;;(let [conn (mg/connect)])
-(mg/connect)
 
-(defn insert-item [item]
-  (println (str item))
-  mc/insert "bono" item)
+
+(let [conn (mg/connect)
+      db (mg/get-db conn "bono")]
+  (defn insert-item [item]
+    (println item)
+    (mc/insert db "items" item)
+  )
+)
 
 (defn find-items []
   mc/find "bono")
