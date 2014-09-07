@@ -43,7 +43,7 @@
 
     (. xhr
        send "/items" "POST" item
-       #js {"Content-Type" "application/edn"}) ; {:name item-name :price item-price})
+       #js {"Content-Type" "application/edn"})
 
    ))
 

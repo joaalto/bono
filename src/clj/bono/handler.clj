@@ -22,15 +22,6 @@
   (db/insert-item item)
 )
 
-;(comment
-  (def app
-    (-> app-routes
-        wrap-edn-params))
-;)
-
-(comment
 (def app
-  (-> (handler/api app-routes)
-      (json/wrap-json-body)
-      (json/wrap-json-response)))
-)
+  (-> app-routes
+      wrap-edn-params))
