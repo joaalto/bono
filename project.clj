@@ -6,10 +6,10 @@
                  [org.clojure/clojurescript "0.0-2311"]
                  [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [om "0.7.1"]
+                 [om-sync "0.1.1"]
                  [com.novemberain/monger "2.0.0"]
                  [compojure "1.1.8"]
                  [ring/ring-core "1.3.1"]
-                 [ring/ring-json "0.3.1"]
                  [fogus/ring-edn "0.2.0"]
                 ]
 
