@@ -3,7 +3,6 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :refer [file-response resource-response response]]
-            [ring.middleware.json :as json]
             [ring.middleware.edn :refer [wrap-edn-params]]
             [bono.db :as db]
             ))
