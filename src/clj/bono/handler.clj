@@ -3,7 +3,8 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :refer [file-response resource-response response]]
-            [ring.middleware.edn :refer [wrap-edn-params]]
+            ;[ring.middleware.edn :refer [wrap-edn-params]]
+            [ring.middleware.format :refer [wrap-restful-format]]
             [bono.db :as db]
             ))
 
@@ -23,4 +24,4 @@
 
 (def app
   (-> app-routes
-      wrap-edn-params))
+      (wrap-restful-format)))

@@ -31,28 +31,45 @@
     (render [this]
       (dom/li nil (display-item item)))))
 
+(defn update-state [owner stored-items]
+    (print "Results: " stored-items)
+    (om/set-state! owner :items stored-items)
+  )
+
 (defn add-item [app owner]
   (let [item-name (->
           (gdom/getElement "item-name") .-value)
         item-price (->
           (gdom/getElement "item-price") .-value)
         item {:name item-name :price item-price}
+       ]
 
+
+(comment
         xhr (XhrIo.)
-
         stored-items (->
         (. xhr
            send "/items" "POST" item
-           #js {"Content-Type" "application/edn"})
-        )
+           #js {"Content-Type" "application/edn"}
+           (update-state)
+        ))
+  )
 
-       ]
+     (print "Item: " item)
 
-    (print "Item: " item)
-    (print stored-items)
+        (edn-xhr
+          {:method :post
+           :url "/items"
+           :data item
+           :on-complete
+             (fn [res]
+               (print "res: " res))
+           }
+         )
 
-    (om/set-state! owner :items stored-items)
-    ;(reset! app-state )
+
+    ;(om/set-state! owner :items stored-items)
+    ;(reset! app-state stored-items)
 
    ))
 

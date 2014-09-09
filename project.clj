@@ -10,7 +10,8 @@
                  [com.novemberain/monger "2.0.0"]
                  [compojure "1.1.8"]
                  [ring/ring-core "1.3.1"]
-                 [fogus/ring-edn "0.2.0"]
+                 [ring-middleware-format "0.4.0"]
+                 ;[fogus/ring-edn "0.2.0"]
                 ]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]
