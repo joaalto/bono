@@ -48,8 +48,7 @@
 
        ]
 
-    (print "Add item!" item-name item-price)
-    (print item)
+    (print "Item: " item)
     (print stored-items)
 
     (om/set-state! owner :items stored-items)
@@ -79,7 +78,6 @@
       (init-state [_] {:update (chan)})
     om/IRenderState
       (render-state [this items]
-                    (print app)
         (dom/div nil
           (dom/h2 nil "Items")
           (apply dom/ul nil
