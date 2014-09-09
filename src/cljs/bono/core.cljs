@@ -1,6 +1,10 @@
 (ns bono.core
+  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
+            [cljs.core.async :as async :refer [put! chan <!]]
+            [om-sync.core :refer [om-sync]]
+            [om-sync.util :refer [tx-tag edn-xhr]]
   )
   (:import [goog.net XhrIo]
            goog.net.EventType
@@ -28,42 +32,73 @@
 
 (defn add-item [app owner]
   (let [item-name (->
-        (. js/document (getElementById "item-name"))
+          (. js/document (getElementById "item-name"))
                    .-value)
         item-price (->
-        (. js/document (getElementById "item-price"))
+          (. js/document (getElementById "item-price"))
                    .-value)
         item {:name item-name :price item-price}
 
         xhr (XhrIo.)
+
+        stored-items (->
+        (. xhr
+           send "/items" "POST" item
+           #js {"Content-Type" "application/edn"})
+        )
+
        ]
 
     (print "Add item!" item-name item-price)
     (print item)
+    (print stored-items)
 
-    (. xhr
-       send "/items" "POST" item
-       #js {"Content-Type" "application/edn"})
+    (om/set-state! owner :items stored-items)
+    ;(reset! app-state )
 
    ))
 
-(defn item-list [app owner]
+(defn add-item-view [app owner]
   (reify
+    om/IInitState
+      (init-state [_] {:update (chan)})
+
     om/IRender
-    (render [this]
-      (dom/div nil
-        (dom/h2 nil "Items")
-        (apply dom/ul nil
-          (om/build-all item-view (:items app)))
-        (dom/label nil "Item")
-        (dom/input #js {:id "item-name"})
-        (dom/label nil "Price")
-        (dom/input #js {:id "item-price"})
-        (dom/button
-          #js {:onClick #(add-item app owner)} "Add item")
+      (render[this]
+        (dom/div nil
+          (dom/label nil "Item")
+          (dom/input #js {:id "item-name"})
+          (dom/label nil "Price")
+          (dom/input #js {:id "item-price"})
+          (dom/button
+            #js {:onClick #(add-item app owner)} "Add item")
        ))))
 
+(defn item-list [app owner]
+  (reify
+    om/IInitState
+      (init-state [_] {:update (chan)})
+    om/IRenderState
+      (render-state [this items]
+                    (print app)
+        (dom/div nil
+          (dom/h2 nil "Items")
+          (apply dom/ul nil
+            (om/build-all item-view (:items app)))
+         ))))
+
+(defn app-view [app owner]
+  (reify
+    om/IRender
+      (render [this]
+        (dom/div nil
+          (om/build item-list app)
+          (om/build add-item-view app))
+        )
+    )
+  )
+
 (om/root
-  item-list
+  app-view
   app-state
   {:target (. js/document (getElementById "app"))})
