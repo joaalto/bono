@@ -2,6 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
+            [goog.dom :as gdom]
             [cljs.core.async :as async :refer [put! chan <!]]
             [om-sync.core :refer [om-sync]]
             [om-sync.util :refer [tx-tag edn-xhr]]
@@ -32,11 +33,9 @@
 
 (defn add-item [app owner]
   (let [item-name (->
-          (. js/document (getElementById "item-name"))
-                   .-value)
+          (gdom/getElement "item-name") .-value)
         item-price (->
-          (. js/document (getElementById "item-price"))
-                   .-value)
+          (gdom/getElement "item-price") .-value)
         item {:name item-name :price item-price}
 
         xhr (XhrIo.)
@@ -101,4 +100,4 @@
 (om/root
   app-view
   app-state
-  {:target (. js/document (getElementById "app"))})
+  {:target (gdom/getElement "app")})
