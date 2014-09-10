@@ -14,12 +14,16 @@
      ]
 
   (defn find-items []
-    (doall (mc/find-maps db coll)))
+    (let
+      [items (doall (mc/find-maps db coll))]
+      (map
+        #(assoc % :_id (str (:_id %)))
+        items)))
 
   (defn insert-item [item]
     (println item)
     (mc/insert db "items" item)
-    (println "Items: " find-items)
+    (println "Items: " (str find-items))
     (find-items)
   )
 
