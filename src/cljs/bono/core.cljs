@@ -38,39 +38,24 @@
 
 (defn add-item [app owner]
   (let [item-name (->
-          (gdom/getElement "item-name") .-value)
+                   (gdom/getElement "item-name") .-value)
         item-price (->
-          (gdom/getElement "item-price") .-value)
+                    (gdom/getElement "item-price") .-value)
         item {:name item-name :price item-price}
-       ]
+        ]
 
+    (print "Item: " item)
 
-(comment
-        xhr (XhrIo.)
-        stored-items (->
-        (. xhr
-           send "/items" "POST" item
-           #js {"Content-Type" "application/edn"}
-           (update-state)
-        ))
-  )
-
-     (print "Item: " item)
-
-        (edn-xhr
-          {:method :post
-           :url "/items"
-           :data item
-           :on-complete
-             (fn [res]
-               (print "res: " res))
-           }
-         )
-
-
-    ;(om/set-state! owner :items stored-items)
-    ;(reset! app-state stored-items)
-
+    (edn-xhr
+     {:method :post
+      :url "/items"
+      :data item
+      :on-complete
+      (fn [items]
+        (om/update! app [:items] (vec items))
+        )
+      }
+     )
    ))
 
 (defn add-item-view [app owner]
