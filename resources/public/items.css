@@ -1,0 +1,10 @@
+
+.input-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.input-field {
+  float: left;
+}
+
