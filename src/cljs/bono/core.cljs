@@ -31,11 +31,6 @@
     (render [this]
       (dom/li nil (display-item item)))))
 
-(defn update-state [owner stored-items]
-    (print "Results: " stored-items)
-    (om/set-state! owner :items stored-items)
-  )
-
 (defn add-item [app owner]
   (let [item-name (->
                    (gdom/getElement "item-name") .-value)
