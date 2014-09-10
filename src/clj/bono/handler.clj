@@ -5,11 +5,9 @@
             [ring.util.response :refer [file-response resource-response response]]
             ;[ring.middleware.edn :refer [wrap-edn-params]]
             [ring.middleware.format :refer [wrap-restful-format]]
+            [prone.middleware :as prone]
             [bono.db :as db]
             ))
-
-(defn json-response []
-  )
 
 (defroutes app-routes
   (GET "/" [] (file-response "resources/public/index.html"))
@@ -24,4 +22,6 @@
 
 (def app
   (-> app-routes
-      (wrap-restful-format)))
+    (wrap-restful-format )
+    (prone/wrap-exceptions)
+   ))
