@@ -3,7 +3,6 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :refer [file-response resource-response response]]
-            ;[ring.middleware.edn :refer [wrap-edn-params]]
             [ring.middleware.format :refer [wrap-restful-format]]
             [prone.middleware :as prone]
             [bono.db :as db]
