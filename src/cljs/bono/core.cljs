@@ -33,14 +33,12 @@
     :on-complete #(om/update! app [:items] (vec %))}))
 
 (defn add-item [app owner]
-  (let [item-name (->
-                   (gdom/getElement "item-name") .-value)
-        item-price (->
-                    (gdom/getElement "item-price") .-value)
-        item {:name item-name :price item-price}
-        ]
+  (let
+    [item-name (-> "item-name" gdom/getElement .-value)
+     item-price (-> "item-price" gdom/getElement .-value)
+     item {:name item-name :price item-price}]
 
-    (print "Item: " item)
+    (print item)
 
     (edn-xhr
      {:method :post
@@ -67,7 +65,7 @@
 
     om/IRender
       (render[this]
-        (domt/div {:class input-container}
+        (domt/div {:class "input-container"}
           (input-field "Item" "item-name")
           (input-field "Price" "item-price")
           (domt/button
@@ -82,7 +80,7 @@
       (render-state [this items]
         (domt/div nil
           (domt/h2 nil "Items")
-          (apply dom/ul nil
+          (apply dom/div nil
             (om/build-all item-view (:items app)))
          ))))
 
