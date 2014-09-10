@@ -2,6 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
+            [om-tools.dom :as domt :include-macros true]
             [goog.dom :as gdom]
             [cljs.core.async :as async :refer [put! chan <!]]
             [om-sync.core :refer [om-sync]]
@@ -23,7 +24,7 @@
   (reify
     om/IRender
     (render [this]
-      (dom/li nil (display-item item)))))
+      (domt/li nil (display-item item)))))
 
 (defn find-items [app]
   (edn-xhr
@@ -53,6 +54,12 @@
      )
    ))
 
+(defn input-field [label id]
+  (domt/div {:class "input-field"}
+    (domt/label label)
+    (domt/input {:id id})
+  ))
+
 (defn add-item-view [app owner]
   (reify
     om/IInitState
@@ -60,13 +67,11 @@
 
     om/IRender
       (render[this]
-        (dom/div nil
-          (dom/label nil "Item")
-          (dom/input #js {:id "item-name"})
-          (dom/label nil "Price")
-          (dom/input #js {:id "item-price"})
-          (dom/button
-            #js {:onClick #(add-item app owner)} "Add item")
+        (domt/div {:class input-container}
+          (input-field "Item" "item-name")
+          (input-field "Price" "item-price")
+          (domt/button
+            {:on-click #(add-item app owner)} "Add item")
        ))))
 
 (defn item-list [app owner]
@@ -75,8 +80,8 @@
       (init-state [_] (find-items app))
     om/IRenderState
       (render-state [this items]
-        (dom/div nil
-          (dom/h2 nil "Items")
+        (domt/div nil
+          (domt/h2 nil "Items")
           (apply dom/ul nil
             (om/build-all item-view (:items app)))
          ))))
@@ -85,7 +90,7 @@
   (reify
     om/IRender
       (render [this]
-        (dom/div nil
+        (domt/div nil
           (om/build item-list app)
           (om/build add-item-view app))
         )
