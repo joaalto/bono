@@ -24,7 +24,7 @@
   (reify
     om/IRender
     (render [this]
-      (domt/li nil (display-item item)))))
+      (domt/div {:class "list-item"} (display-item item)))))
 
 (defn find-items [app]
   (edn-xhr
@@ -80,7 +80,7 @@
       (render-state [this items]
         (domt/div nil
           (domt/h2 nil "Items")
-          (apply dom/div nil
+          (apply dom/div
             (om/build-all item-view (:items app)))
          ))))
 
@@ -88,9 +88,9 @@
   (reify
     om/IRender
       (render [this]
-        (domt/div nil
-          (om/build item-list app)
-          (om/build add-item-view app))
+        (domt/div {:class "column-main"}
+          (om/build add-item-view app)
+          (om/build item-list app))
         )
     )
   )
