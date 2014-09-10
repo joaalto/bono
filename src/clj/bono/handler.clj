@@ -11,7 +11,7 @@
 
 (defroutes app-routes
   (GET "/" [] (file-response "resources/public/index.html"))
-  (GET "/items" [] (db/find-items []))
+  (GET "/items" [] (db/find-items))
   (POST "/items" {params :params} (db/insert-item params) )
   (route/resources "/")
   (route/not-found "Not Found"))

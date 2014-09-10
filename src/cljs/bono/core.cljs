@@ -14,13 +14,7 @@
 
 (enable-console-print!)
 
-(def app-state
-  (atom
-   {:items
-    [{:name "Blue shirt" :price 35}
-     {:name "Green trousers" :price 55}
-     {:name "Beanie hat" :price 30}
-    ]}))
+(def app-state (atom {}))
 
 (defn display-item [{:keys [name price]}]
   (str "Item: " name " price: " price))
@@ -30,6 +24,12 @@
     om/IRender
     (render [this]
       (dom/li nil (display-item item)))))
+
+(defn find-items [app]
+  (edn-xhr
+   {:method :get
+    :url "/items"
+    :on-complete #(om/update! app [:items] (vec %))}))
 
 (defn add-item [app owner]
   (let [item-name (->
@@ -72,7 +72,7 @@
 (defn item-list [app owner]
   (reify
     om/IInitState
-      (init-state [_] {:update (chan)})
+      (init-state [_] (find-items app))
     om/IRenderState
       (render-state [this items]
         (dom/div nil
