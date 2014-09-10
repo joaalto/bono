@@ -38,10 +38,14 @@ input {
 }
 
 .list-item {
+  clear: both;
+}
+
+.item-field {
+  width: 45%;
+  float: left;
   border-radius: 3px;
-  border: 2px solid #BBC378;
   background-color: #BBC378;
   padding: 0.5em;
-  margin-top: 0.5em;
-  margin-botton: 0.5em;
+  margin: 0.5em 0.5em 0.5em 0em;
 }

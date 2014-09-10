@@ -18,13 +18,15 @@
 (def app-state (atom {}))
 
 (defn display-item [{:keys [name price]}]
-  (str "Item: " name " price: " price))
+  (domt/div {:class "list-item"}
+    (domt/div {:class "item-field"} (str "Item: " name))
+    (domt/div {:class "item-field"} (str "Price: " price))))
 
 (defn item-view [item owner]
   (reify
     om/IRender
     (render [this]
-      (domt/div {:class "list-item"} (display-item item)))))
+      (display-item item))))
 
 (defn find-items [app]
   (edn-xhr
