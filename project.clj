@@ -11,6 +11,7 @@
                  [compojure "1.1.8"]
                  [ring/ring-core "1.3.1"]
                  [ring-middleware-format "0.4.0"]
+                 [prone "0.6.0"]
                  ;[fogus/ring-edn "0.2.0"]
                 ]
 
