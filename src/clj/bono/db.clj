@@ -2,7 +2,7 @@
   "Handle database operations."
   (:require [monger.core :as mg]
             [monger.collection :as mc]
-   )
+  )
   (:import [com.mongodb MongoOptions ServerAddress]
            [org.bson.types.ObjectId]))
 
