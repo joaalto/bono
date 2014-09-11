@@ -26,6 +26,4 @@
     (mc/insert db "items" item)
     (find-items)
   )
-
 )
-
