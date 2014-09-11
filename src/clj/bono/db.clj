@@ -7,23 +7,23 @@
            [org.bson.types.ObjectId]))
 
 ;; Connect to localhost, default port
-
 (let [conn (mg/connect)
       db (mg/get-db conn "bono")
       coll "items"
      ]
 
+  (defn id->str [item]
+    (assoc item :_id (str (:_id item)))
+  )
+
   (defn find-items []
     (let
       [items (doall (mc/find-maps db coll))]
-      (map
-        #(assoc % :_id (str (:_id %)))
-        items)))
+      (map id->str items)))
 
   (defn insert-item [item]
     (println item)
     (mc/insert db "items" item)
-    (println "Items: " (str find-items))
     (find-items)
   )
 
