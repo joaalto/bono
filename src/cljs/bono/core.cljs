@@ -2,7 +2,7 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [om-tools.dom :as domt :include-macros true]
+            [om-tools.dom :as ot :include-macros true]
             [goog.dom :as gdom]
             [cljs.core.async :as async :refer [put! chan <!]]
             [om-sync.core :refer [om-sync]]
@@ -18,9 +18,9 @@
 (def app-state (atom {}))
 
 (defn display-item [{:keys [name price]}]
-  (domt/div {:class "list-item"}
-    (domt/div {:class "item-field"} (str "Item: " name))
-    (domt/div {:class "item-field"} (str "Price: " price))))
+  (ot/div {:class "list-item"}
+    (ot/div {:class "item-field"} (str "Item: " name))
+    (ot/div {:class "item-field"} (str "Price: " price))))
 
 (defn item-view [item owner]
   (reify
@@ -34,13 +34,14 @@
     :url "/items"
     :on-complete #(om/update! app [:items] (vec %))}))
 
-(defn add-item [app owner]
+(defn add-item [event app owner]
   (let
     [item-name (-> "item-name" gdom/getElement .-value)
      item-price (-> "item-price" gdom/getElement .-value)
      item {:name item-name :price item-price}]
 
     (print item)
+    (.preventDefault event)
 
     (edn-xhr
      {:method :post
@@ -55,9 +56,9 @@
    ))
 
 (defn input-field [label id]
-  (domt/div {:class "input-field"}
-    (domt/label label)
-    (domt/input {:id id})
+  (ot/div {:class "input-field"}
+    (ot/label label)
+    (ot/input {:id id})
   ))
 
 (defn add-item-view [app owner]
@@ -67,11 +68,11 @@
 
     om/IRender
       (render[this]
-        (domt/div {:class "input-container"}
+        (ot/form {:class "input-container"}
           (input-field "Item" "item-name")
           (input-field "Price" "item-price")
-          (domt/button
-            {:on-click #(add-item app owner)} "Add item")
+          (ot/button
+            {:id "submit-button" :on-click #(add-item % app owner)} "Add item")
        ))))
 
 (defn item-list [app owner]
@@ -80,8 +81,8 @@
       (init-state [_] (find-items app))
     om/IRenderState
       (render-state [this items]
-        (domt/div nil
-          (domt/h2 nil "Items")
+        (ot/div nil
+          (ot/h2 nil "Items")
           (apply dom/div
             (om/build-all item-view (:items app)))
          ))))
@@ -90,7 +91,7 @@
   (reify
     om/IRender
       (render [this]
-        (domt/div {:class "column-main"}
+        (ot/div {:class "column-main"}
           (om/build add-item-view app)
           (om/build item-list app))
         )
