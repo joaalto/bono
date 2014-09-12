@@ -23,6 +23,8 @@
             [lein-ring "0.8.11"]]
 
   :hooks [leiningen.cljsbuild]
+  :main bono.handler
+  :uberjar-name "bono.jar"
 
   :source-paths ["src/clj" "src/cljs"]
   :resource-paths ["resources"]
