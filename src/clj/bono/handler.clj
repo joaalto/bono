@@ -7,7 +7,8 @@
             [ring.adapter.jetty :as ring]
             [prone.middleware :as prone]
             [bono.db :as db]
-            ))
+            )
+  (:gen-class))
 
 (defroutes app-routes
   (GET "/" [] (file-response "resources/public/index.html"))
@@ -26,7 +27,7 @@
     (prone/wrap-exceptions)
    ))
 
-(def -main
+(defn -main []
   (let [port (Integer. (or (System/getenv "PORT") "3000"))]
     (ring/run-jetty app {:port port
                     :join false})))
