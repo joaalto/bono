@@ -4,6 +4,7 @@
             [compojure.route :as route]
             [ring.util.response :refer [file-response resource-response response]]
             [ring.middleware.format :refer [wrap-restful-format]]
+            [ring.adapter.jetty :as ring]
             [prone.middleware :as prone]
             [bono.db :as db]
             ))
@@ -24,3 +25,8 @@
     (wrap-restful-format )
     (prone/wrap-exceptions)
    ))
+
+(def -main
+  (let [port (Integer. (or (System/getenv "PORT") "3000"))]
+    (ring/run-jetty app {:port port
+                    :join false})))
