@@ -6,11 +6,17 @@
   (:import [com.mongodb MongoOptions ServerAddress]
            [org.bson.types.ObjectId]))
 
-;; Connect to localhost, default port
-(let [conn (mg/connect)
+(defn connect
+  "Connect to MONGOHQ_URL if it exists, else default port on localhost."
+  [mongohq-url]
+  (if mongohq-url
+    ((mg/connect-via-uri mongohq-url) :conn)
+    (mg/connect)))
+
+(let [mongohq-url (System/getenv "MONGOHQ_URL")
+      conn (connect mongohq-url)
       db (mg/get-db conn "bono")
-      coll "items"
-     ]
+      coll "items"]
 
   (defn id->str [item]
     (assoc item :_id (str (:_id item)))
