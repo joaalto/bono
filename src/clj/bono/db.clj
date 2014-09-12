@@ -13,7 +13,7 @@
     ((mg/connect-via-uri mongohq-url) :conn)
     (mg/connect)))
 
-(let [mongohq-url (System/getenv "MONGOHQ_URL")
+(let [mongohq-url (System/getenv "MONGOLAB_URI")
       conn (connect mongohq-url)
       db (mg/get-db conn "bono")
       coll "items"]
