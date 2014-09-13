@@ -7,15 +7,14 @@
            [org.bson.types.ObjectId]))
 
 (defn connect
-  "Connect to MONGOHQ_URL if it exists, else default port on localhost."
-  [mongohq-url]
-  (if mongohq-url
-    ((mg/connect-via-uri mongohq-url) :conn)
-    (mg/connect)))
+  "Connect to MONGOLAB_URI if it exists, else default port on localhost."
+  [mongolab-uri]
+  (if mongolab-uri
+    ((mg/connect-via-uri mongolab-uri) :db)
+    (mg/get-db (mg/connect) "bono")))
 
-(let [mongohq-url (System/getenv "MONGOLAB_URI")
-      conn (connect mongohq-url)
-      db (mg/get-db conn "bono")
+(let [mongolab-uri (System/getenv "MONGOLAB_URI")
+      db (connect mongolab-uri)
       coll "items"]
 
   (defn id->str [item]
