@@ -6,7 +6,7 @@
   (:import [com.mongodb MongoOptions ServerAddress]
            [org.bson.types.ObjectId]))
 
-(defn connect
+(defn get-db
   "Connect to MONGOLAB_URI if it exists, else default port on localhost."
   [mongolab-uri]
   (if mongolab-uri
@@ -14,7 +14,7 @@
     (mg/get-db (mg/connect) "bono")))
 
 (let [mongolab-uri (System/getenv "MONGOLAB_URI")
-      db (connect mongolab-uri)
+      db (get-db mongolab-uri)
       coll "items"]
 
   (defn id->str [item]
