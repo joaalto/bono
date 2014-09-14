@@ -13,6 +13,10 @@ button {
   background: #BBC378;
 }
 
+.delete-button {
+  margin-top: 0.7em;
+}
+
 .column-main {
   max-width: 80%;
   background-color: white;
@@ -42,7 +46,7 @@ input {
 }
 
 .item-field {
-  width: 45%;
+  width: 35%;
   float: left;
   border-radius: 3px;
   background-color: #BBC378;

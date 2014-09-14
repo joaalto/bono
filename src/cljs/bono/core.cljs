@@ -17,16 +17,29 @@
 
 (def app-state (atom {}))
 
-(defn display-item [{:keys [name price]}]
+(defn delete-item [event app item-id]
+  (print "id: " item-id)
+  (edn-xhr
+    {:method :delete
+     :url (str "/items/" item-id)
+     :data item-id
+     :on-complete #(om/update! app [:items] (vec %))
+    }))
+
+(defn display-item [{:keys [_id name price]} app]
   (ot/div {:class "list-item"}
     (ot/div {:class "item-field"} (str "Item: " name))
-    (ot/div {:class "item-field"} (str "Price: " price))))
+    (ot/div {:class "item-field"} (str "Price: " price))
+    (ot/div
+      (ot/button
+        {:id "delete-button" :class "delete-button" :on-click #(delete-item % app _id)} "Delete")))
+  )
 
-(defn item-view [item owner]
+(defn item-view [item app]
   (reify
     om/IRender
     (render [this]
-      (display-item item))))
+      (display-item item app))))
 
 (defn find-items [app]
   (edn-xhr

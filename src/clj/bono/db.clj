@@ -31,4 +31,8 @@
     (mc/insert db "items" item)
     (find-items)
   )
+
+  (defn delete-item [id]
+    (mc/remove-by-id db "items" id)
+    (find-items))
 )

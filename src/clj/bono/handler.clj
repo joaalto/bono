@@ -14,6 +14,7 @@
   (GET "/" [] (file-response "resources/public/index.html"))
   (GET "/items" [] (db/find-items))
   (POST "/items" {params :params} (db/insert-item params) )
+  (DELETE "/items/:id" [id] (db/delete-item id))
   (route/resources "/")
   (route/not-found "Not Found"))
 
