@@ -19,27 +19,13 @@
 
 (defn delete-item [event app item-id]
   (print "id: " item-id)
+  (print "app-state: " @app)
   (edn-xhr
     {:method :delete
      :url (str "/items/" item-id)
      :data item-id
      :on-complete #(om/update! app [:items] (vec %))
     }))
-
-(defn display-item [{:keys [_id name price]} app]
-  (ot/div {:class "list-item"}
-    (ot/div {:class "item-field"} (str "Item: " name))
-    (ot/div {:class "item-field"} (str "Price: " price))
-    (ot/div
-      (ot/button
-        {:id "delete-button" :class "delete-button" :on-click #(delete-item % app _id)} "Delete")))
-  )
-
-(defn item-view [item app]
-  (reify
-    om/IRender
-    (render [this]
-      (display-item item app))))
 
 (defn find-items [app]
   (edn-xhr
@@ -88,6 +74,21 @@
             {:id "submit-button" :on-click #(add-item % app owner)} "Add item")
        ))))
 
+(defn display-item [app]
+  (map (fn [item]
+    (let [{:keys [_id name price]} item]
+
+    (ot/div {:class "list-item"}
+      (ot/div {:class "item-field"} (str "Item: " name))
+      (ot/div {:class "item-field"} (str "Price: " price))
+      (ot/div
+        (ot/button
+          {:id "delete-button" :class "delete-button"
+           :on-click #(delete-item % app _id)} "Delete")))
+      ))
+      (:items app))
+  )
+
 (defn item-list [app owner]
   (reify
     om/IInitState
@@ -97,7 +98,7 @@
         (ot/div nil
           (ot/h2 nil "Items")
           (ot/div
-            (om/build-all item-view (:items app)))
+           (display-item app))
          ))))
 
 (defn app-view [app owner]
