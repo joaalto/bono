@@ -96,7 +96,7 @@
       (render-state [this items]
         (ot/div nil
           (ot/h2 nil "Items")
-          (apply dom/div
+          (ot/div
             (om/build-all item-view (:items app)))
          ))))
 
