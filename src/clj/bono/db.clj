@@ -4,7 +4,7 @@
             [monger.collection :as mc]
   )
   (:import [com.mongodb MongoOptions ServerAddress]
-           [org.bson.types.ObjectId]))
+           [org.bson.types ObjectId]))
 
 (defn get-db
   "Connect to MONGOLAB_URI if it exists, else default port on localhost."
@@ -33,6 +33,7 @@
   )
 
   (defn delete-item [id]
-    (mc/remove-by-id db "items" id)
-    (find-items))
+    (mc/remove-by-id db "items" (ObjectId. id))
+    (find-items)
+    )
 )
