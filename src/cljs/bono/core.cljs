@@ -33,15 +33,7 @@
     :url "/items"
     :on-complete #(om/update! app [:items] (vec %))}))
 
-(defn add-item [event app owner]
-  (let
-    [item-name (-> "item-name" gdom/getElement .-value)
-     item-price (-> "item-price" gdom/getElement .-value)
-     item {:name item-name :price item-price}]
-
-    (print item)
-    (.preventDefault event)
-
+(defn add-item [app item]
     (edn-xhr
      {:method :post
       :url "/items"
@@ -50,9 +42,22 @@
       (fn [items]
         (om/update! app [:items] (vec items))
         )
-      }
-     )
-   ))
+      }))
+
+(defn validate-input [event app owner]
+  (let
+    [item-name (-> "item-name" gdom/getElement .-value)
+     item-price (-> "item-price" gdom/getElement .-value)
+     item {:name item-name :price item-price}]
+
+    (.preventDefault event)
+    (print item)
+
+    (if (js/isNaN (js/parseFloat item-price))
+      (print "Not a number!")
+      (add-item app item))
+
+ ))
 
 (defn input-field [label id]
   (ot/div {:class "input-field"}
@@ -72,7 +77,7 @@
           (input-field "Item" "item-name")
           (input-field "Price" "item-price")
           (ot/button
-            {:id "submit-button" :on-click #(add-item % app owner)} "Add item")
+            {:id "submit-button" :on-click #(validate-input % app owner)} "Add item")
        ))))
 
 (defn display-item [app]
