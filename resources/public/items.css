@@ -38,7 +38,7 @@ input {
 }
 
 .input-field {
-  float: left;
+  margin-bottom: 0.4em;
 }
 
 .list-item {

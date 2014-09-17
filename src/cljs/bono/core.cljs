@@ -56,9 +56,10 @@
 
 (defn input-field [label id]
   (ot/div {:class "input-field"}
-    (ot/label label)
-    (ot/input {:id id})
-  ))
+          (ot/div {:class "input-label"}
+                  (ot/label label))
+          (ot/input {:id id})
+          ))
 
 (defn add-item-view [app owner]
   (reify
