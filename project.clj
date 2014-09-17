@@ -15,9 +15,7 @@
                  [ring/ring-core "1.3.1"]
                  [ring-middleware-format "0.4.0"]
                  [ring/ring-servlet "1.1.5"]
-                 [domina "1.0.2"]
                  [prone "0.6.0"]
-                 [formative "0.8.8"]
                 ]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]
