@@ -37,8 +37,13 @@ input {
   position: relative;
 }
 
+.input-label {
+  float: left;
+  width: 5em;
+}
+
 .input-field {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.5em;
 }
 
 .list-item {
