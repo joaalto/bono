@@ -1,8 +1,8 @@
-Prerequisites:
+### Prerequisites
 
 MongoDB running in the default port with a database called "bono".
 
-Running:
+### Usage
 
 `lein ring server-headless`
 
