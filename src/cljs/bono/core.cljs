@@ -55,7 +55,7 @@
 
     (if (js/isNaN (js/parseFloat item-price))
       ;(print "Not a number!")
-      (om/update! app :err-msg "Not a number")
+      (om/update! app :err-msg {"item-price" "Not a number"})
       (add-item app item))
 
  ))
@@ -69,10 +69,11 @@
       (render-state [this state]
                     (print "id: " (:el-id opts))
                     (print app)
-          ;(print "key: " (get-in opts [:err-msg :el-id]))
+          (print "msg: " (get-in app [:err-msg (:el-id opts)]))
 
           (ot/div {:class "error"} ;:display "none"}
-                  (ot/span (:err-msg app))))
+                  ;(ot/span (:err-msg app))))
+            (ot/span (get-in app [:err-msg (:el-id opts)]))))
   ))
 
 (defn input-field [label id app owner]
