@@ -31,6 +31,7 @@ label {
 input {
   margin-right: 1em;
   border-radius: 3px;
+  float: left;
 }
 
 .input-container {
@@ -43,7 +44,13 @@ input {
 }
 
 .input-field {
+  display: table;
   margin-bottom: 0.5em;
+}
+
+.error {
+  float: left;
+  color: red;
 }
 
 .list-item {

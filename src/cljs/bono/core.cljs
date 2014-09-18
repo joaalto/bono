@@ -33,15 +33,8 @@
     :url "/items"
     :on-complete #(om/update! app [:items] (vec %))}))
 
-(defn add-item [event app owner]
-  (let
-    [item-name (-> "item-name" gdom/getElement .-value)
-     item-price (-> "item-price" gdom/getElement .-value)
-     item {:name item-name :price item-price}]
-
-    (print item)
-    (.preventDefault event)
-
+(defn add-item [app item]
+    (om/update! app :err-msg {"item-price" ""})
     (edn-xhr
      {:method :post
       :url "/items"
@@ -50,15 +43,39 @@
       (fn [items]
         (om/update! app [:items] (vec items))
         )
-      }
-     )
-   ))
+      }))
 
-(defn input-field [label id]
+(defn validate-input [event app owner]
+  (let
+    [item-name (-> "item-name" gdom/getElement .-value)
+     item-price (-> "item-price" gdom/getElement .-value)
+     item {:name item-name :price item-price}]
+
+    (.preventDefault event)
+    (print item)
+
+    (if (js/isNaN (js/parseFloat item-price))
+      (om/update! app :err-msg {"item-price" "Not a number!"})
+      (add-item app item))
+ ))
+
+(defn error-msg [app owner opts]
+  (reify
+    om/IInitState
+    (init-state [_] {:err-msg ""})
+
+    om/IRenderState
+    (render-state [this state]
+                  (ot/div {:class "error"}
+                          (ot/span {:class "error"} (get-in app [:err-msg (:el-id opts)]))))
+    ))
+
+(defn input-field [label id app owner]
   (ot/div {:class "input-field"}
           (ot/div {:class "input-label"}
                   (ot/label label))
           (ot/input {:id id})
+          (om/build error-msg app {:opts {:el-id id}})
           ))
 
 (defn add-item-view [app owner]
@@ -67,12 +84,12 @@
       (init-state [_] {:update (chan)})
 
     om/IRender
-      (render[this]
+      (render [this]
         (ot/form {:class "input-container"}
-          (input-field "Item" "item-name")
-          (input-field "Price" "item-price")
+          (input-field "Item" "item-name" app owner)
+          (input-field "Price" "item-price" app owner)
           (ot/button
-            {:id "submit-button" :on-click #(add-item % app owner)} "Add item")
+            {:id "submit-button" :on-click #(validate-input % app owner)} "Add item")
        ))))
 
 (defn display-item [app]
