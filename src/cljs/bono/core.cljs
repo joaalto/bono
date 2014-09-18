@@ -55,33 +55,39 @@
 
     (if (js/isNaN (js/parseFloat item-price))
       ;(print "Not a number!")
-      (om/set-state! owner :err-msg "Not a number")
+      (om/update! app :err-msg "Not a number")
       (add-item app item))
 
  ))
 
-(defn error-msg [msg owner]
-  (comment
+(defn error-msg [app owner opts]
   (reify
     om/IInitState
-      (init-state [_] {:text ""})
+      (init-state [_] {:err-msg ""})
 
     om/IRenderState
       (render-state [this state]
-                    )))
-          (ot/div {:class "error" :display "none"}
-                  (ot/span (:text state)))
-  )
+                    (print "id: " (:el-id opts))
+                    (print app)
+          ;(print "key: " (get-in opts [:err-msg :el-id]))
 
-(defn input-field [label id owner]
-  ;(reify
-  ;  om/IRender
-  ;  (render [this ]
+          (ot/div {:class "error"} ;:display "none"}
+                  (ot/span (:err-msg app))))
+  ))
+
+(defn input-field [label id app owner]
+  (comment
+    (reify
+      om/IRender
+      (render [this ]
+              )))
+
                   (ot/div {:class "input-field"}
                           (ot/div {:class "input-label"}
                                   (ot/label label))
                           (ot/input {:id id})
-                          (error-msg "Virhe" owner)
+                          ;(error-msg "Virhe" owner)
+                          (om/build error-msg app {:opts {:el-id id}})
                           ))
 
 (defn add-item-view [app owner]
@@ -92,8 +98,8 @@
     om/IRender
       (render [this]
         (ot/form {:class "input-container"}
-          (input-field "Item" "item-name" owner)
-          (input-field "Price" "item-price" owner)
+          (input-field "Item" "item-name" app owner)
+          (input-field "Price" "item-price" app owner)
           (ot/button
             {:id "submit-button" :on-click #(validate-input % app owner)} "Add item")
        ))))
