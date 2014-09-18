@@ -54,42 +54,28 @@
     (print item)
 
     (if (js/isNaN (js/parseFloat item-price))
-      ;(print "Not a number!")
-      (om/update! app :err-msg {"item-price" "Not a number"})
+      (om/update! app :err-msg {"item-price" "Not a number!"})
       (add-item app item))
-
  ))
 
 (defn error-msg [app owner opts]
   (reify
     om/IInitState
-      (init-state [_] {:err-msg ""})
+    (init-state [_] {:err-msg ""})
 
     om/IRenderState
-      (render-state [this state]
-                    (print "id: " (:el-id opts))
-                    (print app)
-          (print "msg: " (get-in app [:err-msg (:el-id opts)]))
-
-          (ot/div {:class "error"} ;:display "none"}
-                  ;(ot/span (:err-msg app))))
-            (ot/span (get-in app [:err-msg (:el-id opts)]))))
-  ))
+    (render-state [this state]
+                  (ot/div {:class "error"} ;:display "none"}
+                          (ot/span (get-in app [:err-msg (:el-id opts)]))))
+    ))
 
 (defn input-field [label id app owner]
-  (comment
-    (reify
-      om/IRender
-      (render [this ]
-              )))
-
-                  (ot/div {:class "input-field"}
-                          (ot/div {:class "input-label"}
-                                  (ot/label label))
-                          (ot/input {:id id})
-                          ;(error-msg "Virhe" owner)
-                          (om/build error-msg app {:opts {:el-id id}})
-                          ))
+  (ot/div {:class "input-field"}
+          (ot/div {:class "input-label"}
+                  (ot/label label))
+          (ot/input {:id id})
+          (om/build error-msg app {:opts {:el-id id}})
+          ))
 
 (defn add-item-view [app owner]
   (reify
