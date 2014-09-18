@@ -46,6 +46,11 @@ input {
   margin-bottom: 0.5em;
 }
 
+.error {
+  float: right;
+  color: red;
+}
+
 .list-item {
   clear: both;
 }
