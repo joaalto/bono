@@ -67,7 +67,7 @@
     om/IRenderState
     (render-state [this state]
                   (ot/div {:class "error"}
-                          (ot/span (get-in app [:err-msg (:el-id opts)]))))
+                          (ot/span {:class "error"} (get-in app [:err-msg (:el-id opts)]))))
     ))
 
 (defn input-field [label id app owner]
