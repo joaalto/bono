@@ -65,7 +65,7 @@
 
     om/IRenderState
     (render-state [this state]
-                  (ot/div {:class "error"} ;:display "none"}
+                  (ot/div {:class "error"}
                           (ot/span (get-in app [:err-msg (:el-id opts)]))))
     ))
 
