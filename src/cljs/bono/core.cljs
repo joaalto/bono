@@ -62,7 +62,7 @@
 (defn error-msg [app owner opts]
   (reify
     om/IInitState
-    (init-state [_] {:err-msg ""})
+    (init-state [_] {:err-msg {}})
 
     om/IRenderState
     (render-state [this state]
