@@ -16,7 +16,7 @@
                  [ring-middleware-format "0.4.0"]
                  [ring/ring-servlet "1.1.5"]
                  [prone "0.6.0"]
-                ]
+                 ]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]
             [lein-ring "0.8.11"]]
@@ -29,13 +29,13 @@
   :resource-paths ["resources"]
 
   :cljsbuild {
-    :builds [{:id "bono"
-              :source-paths ["src/cljs"]
-              :compiler {
-                :output-to "resources/public/js/out/bono.js"
-                :output-dir "resources/public/js/out"
-                :optimizations :none
-                :source-map true}}]}
+              :builds [{:id "bono"
+                        :source-paths ["src/cljs"]
+                        :compiler {
+                                   :output-to "resources/public/js/out/bono.js"
+                                   :output-dir "resources/public/js/out"
+                                   :optimizations :none
+                                   :source-map true}}]}
 
   :ring {:handler bono.handler/app}
-)
+  )
