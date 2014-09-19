@@ -48,13 +48,13 @@
 (defn validate-input [event app owner]
   (let
     [item-name (-> "item-name" gdom/getElement .-value)
-     item-price (-> "item-price" gdom/getElement .-value)
+     item-price (-> "item-price" gdom/getElement .-value (js/parseFloat))
      item {:name item-name :price item-price}]
 
     (.preventDefault event)
     (print item)
 
-    (if (js/isNaN (js/parseFloat item-price))
+    (if (js/isNaN item-price)
       (om/update! app :err-msg {"item-price" "Not a number!"})
       (add-item app item))
  ))
