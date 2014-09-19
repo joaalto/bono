@@ -34,7 +34,7 @@
     :on-complete #(om/update! app [:items] (vec %))}))
 
 (defn add-item [app item]
-    (om/update! app :err-msg {"item-price" ""})
+    (om/update! app :err-msg {})
     (edn-xhr
      {:method :post
       :url "/items"
