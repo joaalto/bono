@@ -2,6 +2,8 @@
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
 
+  :aliases { "cljs-prod" ["with-profile" "prod" "cljsbuild" "once"]}
+
   :min-lein-version "2.0.0"
 
   :dependencies [[org.clojure/clojure "1.6.0"]
@@ -28,14 +30,26 @@
   :source-paths ["src/clj" "src/cljs"]
   :resource-paths ["resources"]
 
-  :cljsbuild {
-              :builds [{:id "bono"
-                        :source-paths ["src/cljs"]
-                        :compiler {
-                                   :output-to "resources/public/js/out/bono.js"
-                                   :output-dir "resources/public/js/out"
-                                   :optimizations :none
-                                   :source-map true}}]}
+  :cljsbuild {:builds {
+                       :bono {:id "bono"
+                              :source-paths ["src/cljs"]
+                              :compiler {
+                                         :output-to "resources/public/js/out/bono.js"
+                                         :output-dir "resources/public/js/out"
+                                         :optimizations :none
+                                         :source-map true}}}}
+
 
   :ring {:handler bono.handler/app}
+
+  :profiles {
+             :prod [{
+                     :cljsbuild {:builds {:bono {:compiler {:output-to "resources/public/js/out/bono-min.js"
+                                                            :output-dir "resources/public/js/out"
+                                                            :preamble ["public/js/react/react-0.11.2.min.js"]
+                                                            :optimizations :advanced
+                                                            :pretty-print false
+                                                            :source-map  "resources/public/js/out/source.map"}}}}}]
+             }
+
   )
