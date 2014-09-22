@@ -43,13 +43,15 @@
   :ring {:handler bono.handler/app}
 
   :profiles {
-             :prod [{
-                     :cljsbuild {:builds {:bono {:compiler {:output-to "resources/public/js/out/bono-min.js"
-                                                            :output-dir "resources/public/js/out"
+             :prod [{:cljsbuild {:builds {:bono {:compiler {:output-to "resources/public/js/out/bono-min.js"
                                                             :preamble ["public/js/react/react-0.11.2.min.js"]
+                                                            :externs ["public/js/react/react-0.11.2.js"]
                                                             :optimizations :advanced
                                                             :pretty-print false
-                                                            :source-map  "resources/public/js/out/source.map"}}}}}]
+                                                            :source-map  "resources/public/js/out/source.map"
+                                                            :closure-warnings {:externs-validation :off
+                                                                               :non-standard-jsdoc :off}
+                                                            }}}}}]
              }
 
   )
