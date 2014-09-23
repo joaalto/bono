@@ -2,7 +2,9 @@
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
 
-  :aliases { "cljs-prod" ["cljsbuild" "once" "prod"]}
+  :aliases { "cljs-prod" ["cljsbuild" "once" "prod"]
+             "dev-build" ["do" "resource," "cljsbuild" "once"]
+             }
 
   :min-lein-version "2.0.0"
 
@@ -35,14 +37,27 @@
   :resource-paths ["resources"]
 
   :profiles {
-             :production {:resource {:resource-paths ["prod-resources"]
-                                     :target-path "resources/public"
-                                     }
-                          }
+             :uberjar {:resource {:resource-paths ["prod-resources"]
+                                  :target-path "resources/public"
+                                  }
+                       :cljsbuild {
+                                   :prod {
+                                          :compiler {
+                                                     :output-to "resources/public/js/out/bono-min.js"
+                                                     :preamble ["public/js/react/react-0.11.2.min.js"]
+                                                     :externs ["public/js/react/react-0.11.2.js"]
+                                                     :optimizations :advanced
+                                                     :pretty-print false
+                                                     :source-map  false ;"resources/public/js/out/source.map"
+                                                     :closure-warnings {:externs-validation :off
+                                                                        :non-standard-jsdoc :off}
+                                                     }}
+                                   }
+                       }
              :dev {:resource {:resource-paths ["dev-resources"]
                               :target-path "resources/public"
                               }
-             }}
+                   }}
 
   :cljsbuild {:builds {
                        :bono {:id "bono"
@@ -60,7 +75,7 @@
                                          :externs ["public/js/react/react-0.11.2.js"]
                                          :optimizations :advanced
                                          :pretty-print false
-                                         :source-map  "resources/public/js/out/source.map"
+                                         :source-map  false;"resources/public/js/out/source.map"
                                          :closure-warnings {:externs-validation :off
                                                             :non-standard-jsdoc :off}
                                          }}
