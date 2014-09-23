@@ -3,7 +3,7 @@
   :url "http://example.com/FIXME"
 
   :aliases { "cljs-prod" ["cljsbuild" "once" "prod"]
-             "dev-build" ["do" "resource," "cljsbuild" "once"]
+             "dev-build" ["do" "resource," "cljsbuild" "auto"]
              }
 
   :min-lein-version "2.0.0"
