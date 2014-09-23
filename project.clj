@@ -2,7 +2,7 @@
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
 
-  :aliases { "cljs-prod" ["with-profile" "prod" "cljsbuild" "once"]}
+  :aliases { "cljs-prod" ["cljsbuild" "once" "prod"]}
 
   :min-lein-version "2.0.0"
 
@@ -37,21 +37,21 @@
                                          :output-to "resources/public/js/out/bono.js"
                                          :output-dir "resources/public/js/out"
                                          :optimizations :none
-                                         :source-map true}}}}
+                                         :source-map true}}
 
+                       :prod {
+                              :compiler {
+                                         :output-to "resources/public/js/out/bono-min.js"
+                                         :preamble ["public/js/react/react-0.11.2.min.js"]
+                                         :externs ["public/js/react/react-0.11.2.js"]
+                                         :optimizations :advanced
+                                         :pretty-print false
+                                         :source-map  "resources/public/js/out/source.map"
+                                         :closure-warnings {:externs-validation :off
+                                                            :non-standard-jsdoc :off}
+                                         }}
+                       }}
 
   :ring {:handler bono.handler/app}
-
-  :profiles {
-             :prod [{:cljsbuild {:builds {:bono {:compiler {:output-to "resources/public/js/out/bono-min.js"
-                                                            :preamble ["public/js/react/react-0.11.2.min.js"]
-                                                            :externs ["public/js/react/react-0.11.2.js"]
-                                                            :optimizations :advanced
-                                                            :pretty-print false
-                                                            :source-map  "resources/public/js/out/source.map"
-                                                            :closure-warnings {:externs-validation :off
-                                                                               :non-standard-jsdoc :off}
-                                                            }}}}}]
-             }
 
   )
