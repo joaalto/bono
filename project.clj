@@ -21,14 +21,28 @@
                  ]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]
-            [lein-ring "0.8.11"]]
+            [lein-ring "0.8.11"]
+            [lein-resource "0.3.7"]
+            ]
 
-  :hooks [leiningen.cljsbuild]
+  :hooks [leiningen.cljsbuild
+          leiningen.resource]
+
   :main bono.handler
   :uberjar-name "bono.jar"
 
   :source-paths ["src/clj" "src/cljs"]
   :resource-paths ["resources"]
+
+  :profiles {
+             :production {:resource {:resource-paths ["prod-resources"]
+                                     :target-path "resources/public"
+                                     }
+                          }
+             :dev {:resource {:resource-paths ["dev-resources"]
+                              :target-path "resources/public"
+                              }
+             }}
 
   :cljsbuild {:builds {
                        :bono {:id "bono"
