@@ -71,7 +71,6 @@
                              :id "dev"
                              :source-paths ["src/cljs"]
                              :compiler {
-                                        ;  :output-dir "resources/public/js/out"
                                         :output-to "resources/public/js/out/bono.js"
                                         :optimizations :none
                                         :source-map true}}
