@@ -3,6 +3,7 @@ pom.xml
 /lib/
 /classes/
 /resources/public/js/out/
+/resources/public/js/out-prod/
 /target/
 .lein-deps-sum
 .lein-repl-history
