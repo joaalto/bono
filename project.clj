@@ -27,8 +27,14 @@
           leiningen.resource]
 
   :aliases { "cljs-prod" ["cljsbuild" "once" "prod"]
-             "dev-build" ["do" "resource," "cljsbuild" "auto"]
-             "uberjar" ["with-profile" "uberjar" "do" "cljsbuild" "once," "uberjar"]
+
+             "dev-build" ["do" "resource,"
+                          "cljsbuild" "auto" "dev"]
+
+             "uberjar" ["with-profile" "uberjar" "do"
+                        "resource,"
+                        "cljsbuild" "once" "prod,"
+                        "uberjar"]
              }
 
   :main bono.handler
@@ -40,40 +46,37 @@
   :profiles {
              :uberjar {:resource {:resource-paths ["prod-resources"]
                                   :target-path "resources/public"
-                                  }
-
-                       :cljsbuild {:builds {
-                                            :prod {
-                                                   :id "prod"
-                                                   :source-paths ["src/cljs"]
-                                                   :compiler {
-                                                              :output-dir "resources/public/js/out"
-                                                              :output-to "resources/public/js/out/bono-min.js"
-                                                              :preamble ["public/js/react/react-0.11.2.min.js"]
-                                                              :externs ["public/js/react/react-0.11.2.js"]
-                                                              :optimizations :advanced
-                                                              :pretty-print false
-                                                              :source-map   "resources/public/js/out/source.map"
-                                                              :closure-warnings {:externs-validation :off
-                                                                                 :non-standard-jsdoc :off}
-                                                              }
-                                                   }
-                                            }}
-                       }
+                                  }}
 
              :dev {:resource {:resource-paths ["dev-resources"]
                               :target-path "resources/public"
-                              }
-                   }}
+                              }}}
 
   :cljsbuild {:builds {
                        :dev {
                              :id "dev"
                              :source-paths ["src/cljs"]
                              :compiler {
+                                        :output-dir "resources/public/js/out"
                                         :output-to "resources/public/js/out/bono.js"
                                         :optimizations :none
                                         :source-map true}}
+
+                       :prod {
+                              :id "prod"
+                              :source-paths ["src/cljs"]
+                              :compiler {
+                                         :output-dir "resources/public/js/out-prod"
+                                         :output-to "resources/public/js/out/bono-min.js"
+                                         :preamble ["public/js/react/react-0.11.2.min.js"]
+                                         :externs ["public/js/react/react-0.11.2.js"]
+                                         :optimizations :advanced
+                                         :pretty-print false
+                                         :source-map "resources/public/js/out/source.map"
+                                         :closure-warnings {:externs-validation :off
+                                                            :non-standard-jsdoc :off}
+                                         }
+                              }
 
                        }}
 
