@@ -3,6 +3,7 @@
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [om-tools.dom :as ot :include-macros true]
+            [om-tools.core :refer-macros [defcomponent]]
             [goog.dom :as gdom]
             [cljs.core.async :as async :refer [put! chan <!]]
             [om-sync.core :refer [om-sync]]
@@ -59,16 +60,13 @@
       (add-item app item))
  ))
 
-(defn error-msg [app owner opts]
-  (reify
-    om/IInitState
-    (init-state [_] {:err-msg {}})
+(defcomponent error-msg [app owner opts]
+              (init-state [_] {:err-msg {}})
 
-    om/IRenderState
-    (render-state [this state]
-                  (ot/div {:class "error"}
-                          (ot/span {:class "error"} (get-in app [:err-msg (:el-id opts)]))))
-    ))
+              (render-state [this state]
+                            (ot/div {:class "error"}
+                                    (ot/span {:class "error"} (get-in app [:err-msg (:el-id opts)]))))
+              )
 
 (defn input-field [label id app owner]
   (ot/div {:class "input-field"}
@@ -78,19 +76,16 @@
           (om/build error-msg app {:opts {:el-id id}})
           ))
 
-(defn add-item-view [app owner]
-  (reify
-    om/IInitState
-      (init-state [_] {:update (chan)})
+(defcomponent add-item-view [app owner]
+              (init-state [_] {:update (chan)})
 
-    om/IRender
-      (render [this]
-        (ot/form {:class "input-container"}
-          (input-field "Item" "item-name" app owner)
-          (input-field "Price" "item-price" app owner)
-          (ot/button
-            {:id "submit-button" :on-click #(validate-input % app owner)} "Add item")
-       ))))
+              (render [this]
+                      (ot/form {:class "input-container"}
+                               (input-field "Item" "item-name" app owner)
+                               (input-field "Price" "item-price" app owner)
+                               (ot/button
+                                 {:id "submit-button" :on-click #(validate-input % app owner)} "Add item")
+                               )))
 
 (defn display-item [app]
   (map (fn [item]
@@ -107,28 +102,22 @@
       (:items app))
   )
 
-(defn item-list [app owner]
-  (reify
-    om/IInitState
-      (init-state [_] (find-items app))
-    om/IRenderState
-      (render-state [this items]
-        (ot/div nil
-          (ot/h2 nil "Items")
-          (ot/div
-           (display-item app))
-         ))))
+(defcomponent item-list [app owner]
+  (init-state [_] (find-items app))
+  (render-state [this items]
+                (ot/div nil
+                        (ot/h2 nil "Items")
+                        (ot/div
+                          (display-item app))
+                        )))
 
-(defn app-view [app owner]
-  (reify
-    om/IRender
-      (render [this]
-        (ot/div {:class "column-main"}
-          (om/build add-item-view app)
-          (om/build item-list app))
-        )
-    )
-  )
+(defcomponent app-view [app owner]
+              (render [this]
+                      (ot/div {:class "column-main"}
+                              (om/build add-item-view app)
+                              (om/build item-list app))
+                      )
+              )
 
 (om/root
   app-view
