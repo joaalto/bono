@@ -8,11 +8,11 @@
             [cljs.core.async :as async :refer [put! chan <!]]
             [om-sync.core :refer [om-sync]]
             [om-sync.util :refer [tx-tag edn-xhr]]
-  )
+            )
   (:import [goog.net XhrIo]
            goog.net.EventType
            [goog.events EventType])
-)
+  )
 
 (enable-console-print!)
 
@@ -26,25 +26,25 @@
      :url (str "/items/" item-id)
      :data item-id
      :on-complete #(om/update! app [:items] (vec %))
-    }))
+     }))
 
 (defn find-items [app]
   (edn-xhr
-   {:method :get
-    :url "/items"
-    :on-complete #(om/update! app [:items] (vec %))}))
+    {:method :get
+     :url "/items"
+     :on-complete #(om/update! app [:items] (vec %))}))
 
 (defn add-item [app item]
-    (om/update! app :err-msg {})
-    (edn-xhr
-     {:method :post
-      :url "/items"
-      :data item
-      :on-complete
-      (fn [items]
-        (om/update! app [:items] (vec items))
-        )
-      }))
+  (om/update! app :err-msg {})
+  (edn-xhr
+    {:method :post
+     :url "/items"
+     :data item
+     :on-complete
+             (fn [items]
+               (om/update! app [:items] (vec items))
+               )
+     }))
 
 (defn validate-input [event app owner]
   (let
@@ -58,7 +58,7 @@
     (if (js/isNaN item-price)
       (om/update! app :err-msg {"item-price" "Not a number!"})
       (add-item app item))
- ))
+    ))
 
 (defcomponent error-msg [app owner opts]
               (init-state [_] {:err-msg {}})
@@ -89,27 +89,27 @@
 
 (defn display-item [app]
   (map (fn [item]
-    (let [{:keys [_id name price]} item]
+         (let [{:keys [_id name price]} item]
 
-    (ot/div {:class "list-item"}
-      (ot/div {:class "item-field"} (str "Item: " name))
-      (ot/div {:class "item-field"} (str "Price: " price))
-      (ot/div
-        (ot/button
-          {:id "delete-button" :class "delete-button"
-           :on-click #(delete-item % app _id)} "Delete")))
-      ))
-      (:items app))
+           (ot/div {:class "list-item"}
+                   (ot/div {:class "item-field"} (str "Item: " name))
+                   (ot/div {:class "item-field"} (str "Price: " price))
+                   (ot/div
+                     (ot/button
+                       {:id "delete-button" :class "delete-button"
+                        :on-click #(delete-item % app _id)} "Delete")))
+           ))
+       (:items app))
   )
 
 (defcomponent item-list [app owner]
-  (init-state [_] (find-items app))
-  (render-state [this items]
-                (ot/div nil
-                        (ot/h2 nil "Items")
-                        (ot/div
-                          (display-item app))
-                        )))
+              (init-state [_] (find-items app))
+              (render-state [this items]
+                            (ot/div nil
+                                    (ot/h2 nil "Items")
+                                    (ot/div
+                                      (display-item app))
+                                    )))
 
 (defcomponent app-view [app owner]
               (render [this]
