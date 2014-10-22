@@ -11,3 +11,5 @@ pom.xml
 .nrepl-port
 .DS_Store
 resources/public/index.html
+.idea/
+*.iml
